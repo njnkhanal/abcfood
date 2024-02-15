@@ -18,9 +18,15 @@
                             </thead>
                             <tbody>
                                 @if ($cartItems != null)
-                                    @foreach ($cartItems as $cartItem)
+                                    @foreach ($cartItems as $key => $cartItem)
                                         @php
-                                            $food = App\Models\FoodItem::find($cartItem);
+                                            if (is_array($cartItem)) {
+                                                $food = App\Models\FoodItem::find($cartItem[0]);
+                                                $qty = $cartItem[1];
+                                            } else {
+                                                $food = App\Models\FoodItem::find($cartItem);
+                                                $qty = 1;
+                                            }
                                             // dd($cartProduct);
                                         @endphp
                                         @if ($food != null)
@@ -40,14 +46,12 @@
                                                     <div class="cart-price"><span>${{ $food->food_price }}</span></div>
                                                 </td>
                                                 <td>
-                                                    <div class="cart-select">
-                                                        <select name="select" id="select">
-                                                            <option value="">01</option>
-                                                            <option value="">02</option>
-                                                            <option value="">03</option>
-                                                            <option value="">04</option>
-                                                        </select>
-                                                    </div>
+                                                    <form method="POST" action="{{ route('cart.update', $key) }}"
+                                                        class="cart-select">
+                                                        @csrf
+                                                        <input type="number" name="qty" value="{{ $qty }}"
+                                                            class="form-control">
+                                                    </form>
                                                 </td>
                                                 <td>
                                                     <div class="cart-del"><a href="#"><i class="fa fa-trash"

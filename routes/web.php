@@ -25,6 +25,7 @@ Route::get('/', [FrontendController::class, 'welcome']);
 Route::middleware(['auth'])->group(function () {
     // frontend controller
     Route::get('/cart/{product_id}', [FrontendController::class, 'cartAdd'])->name('cart.add');
+    Route::post('/cart/{cart_index}', [FrontendController::class, 'cartUpdate'])->name('cart.update');
     Route::get('/cart', [FrontendController::class, 'viewCart'])->name('cart.view');
 });
 Route::get('/foodDetails/{id}', [FrontendController::class, 'foodDetails'])->name('foodDetail');
